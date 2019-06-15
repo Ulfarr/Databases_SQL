@@ -141,11 +141,8 @@ Terry Boot	1
 A:SELECT patrons.id, patrons.name, books.title
   FROM transactions AS tr
   JOIN patrons ON tr.id = patrons.id
-  JOIN books ON books.isbn = tr.isbn;
+  JOIN books ON books.isbn = tr.isbn
+  WHERE tr.checked_in_date IS NULL;
 
 id	name	title
-1	Hermione Granger	Hogwarts: A History
-2	Terry Boot	Advanced Potion-Making
-3	Padma Patil	Fantastic Beasts and Where to Find Them
-4	Cho Chang	Fantastic Beasts and Where to Find Them
 5	Cedric Diggory	Advanced Potion-Making
