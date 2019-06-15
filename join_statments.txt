@@ -1,0 +1,151 @@
+Exercises
+
+1. How do you find related data held in two separate data tables?
+
+A: Utilizing a `JOIN` statement to combine and display information relative to the necessary key.
+
+2. Explain, in your own words, the difference between an INNER JOIN, LEFT OUTER JOIN, and RIGHT OUTER JOIN. Give a real-world example for each.
+
+A: 
+An inner join is the default join type. It combines only the rows that match up and have data in both tables. If there are empty values in either table, it will exclude those rows. An example would be a Rugby league database containing a team table and player table. `INNER JOIN` would only show me rugby players on teams and only teams that have players.
+
+A left outer join adds all the values from the selected column of the first table (the one on the left of the = comparison operator after the ON keyword), and joins or adds in empty values for the second table (the one on the right). It forces the right table to join with the left one and complete the row, although it only provides empty values if it can't find matching data. If LEFT is teams `LEFT OUTER JOIN` would show me all teams and what players if any are on that team.  
+
+A right outer join adds all the values from the selected column of the second table (the one on the right of the '=' comparison operator after the ON keyword), and joins or adds in empty values for the first table (the one on the left). It forces the left table to join with the right one and complete the row, although it only provides empty values if it can't find matching data. If LEFT is teams ` RIGHT OUTER JOIN` would show me all players and if they are on a team or not.
+
+3. Define primary key and foreign key. Give a real-world example for each.
+
+A: A primary key relates directly to the table, while a foreign key is a value shared by another table's primary key. An example would be a rugby team has an id (primary key), rugby players have a team_id (foreign key).
+
+4. Define aliasing.
+
+A: Aliasing refers to when the table names are abbreviated in a SELECT statement.
+
+5. Change this query so that you are using aliasing:
+
+SELECT professor.name, compensation.salary,
+compensation.vacation_days FROM professor JOIN
+compensation ON professor.id =
+compensation.professor_id;
+
+A:SELECT p.name, c.salary, c.vacation_days
+  FROM professor AS p
+  JOIN compensation AS c
+  ON p.id = c.professor_id;
+
+6. Why would you use a NATURAL JOIN? Give a real-world example.
+
+A: Let say a State has a database of public restrooms and each restroom has several tables that are identically names such as water fountain boolean, bathroom sink boolean, toilet boolean, etc. One could use NATURAL JOIN and get a returned table without having to list every shared bathroom table columns.
+
+7. Using this Employee schema and data, write queries to find the following information:
+List all employees and all shifts.
+
+A:SELECT employees.name, shifts.date, shifts.start_time, shifts.end_time
+  FROM scheduled_shifts
+  JOIN employees ON employees.id = scheduled_shifts.employee_id
+  JOIN shifts ON scheduled_shifts.shift_id = shifts.id;
+
+8. Using this Adoption schema and data, please write queries to retrieve the following information and include the results:
+
+)Create a list of all volunteers. If the volunteer is fostering a dog, include each dog as well.
+
+A:SELECT dogs.id, dogs.name, dogs.gender, dogs.age, dogs.weight, dogs.breed, dogs.intake_date, dogs.in_foster
+  FROM volunteers
+  JOIN dogs ON dogs.id = volunteers.foster_dog_id;
+
+id	name	gender	age	weight	breed	intake_date	in_foster
+10002	Munchkin	F	0	8	dachsund chihuahua	2017-01-13T00:00:00.000Z	null
+10006	Marmaduke	M	7	150	great dane	2016-03-22T00:00:00.000Z	null
+
+)The cat's name, adopter's name, and adopted date for each cat adopted within the past month to be displayed as part of the "Happy Tail" social media promotion which posts recent successful adoptions.
+
+A:SELECT cats.name, adopters.first_name, adopters.last_name, cat_adoptions.date
+  FROM cat_adoptions
+  JOIN cats ON cats.id = cat_adoptions.cat_id
+  JOIN adopters ON adopters.id = cat_adoptions.adopter_id
+  WHERE date > current_date - 30;
+
+name	first_name	last_name	date
+Mushi	Arabella	Figg	2019-05-26T00:00:00.000Z
+Victoire	Argus	Filch	2019-05-31T00:00:00.000Z
+
+)Create a list of adopters who have not yet chosen a dog to adopt.
+
+A:SELECT adopters.id, adopters.first_name, adopters.last_name, adopters.address, adopters.phone_number
+  FROM dog_adoptions
+  JOIN adopters ON adopters.id != dog_adoptions.adopter_id
+
+id	first_name	last_name	address	phone_number
+1	Hermione	Granger	32 Granger's Street	676-464-7837
+2	Arabella	Figg	4 Wisteria Walk	843-228-5239
+
+)Lists of all cats and all dogs who have not been adopted.
+
+A:SELECT dogs.id, dogs.name, dogs.gender, dogs.age, dogs.weight, dogs.breed, dogs.intake_date
+  FROM dog_adoptions as d
+  JOIN dogs ON d.dog_id != dogs.id;
+
+  SELECT cats.id, cats.name, cats.gender, cats.age, cats.intake_date
+  FROM cat_adoptions as ca
+  JOIN cats ON ca.cat_id != cats.id;
+
+id	name	gender	age	weight	breed	intake_date
+10001	Boujee	F	3	36	labrador poodle	2017-06-22T00:00:00.000Z
+10002	Munchkin	F	0	8	dachsund chihuahua	2017-01-13T00:00:00.000Z
+10004	Marley	M	0	10	labrador	2017-05-04T00:00:00.000Z
+10003	Lassie	F	7	17	collie shepherd	2016-07-05T00:00:00.000Z
+10006	Marmaduke	M	7	150	great dane	2016-03-22T00:00:00.000Z
+
+
+id	name	gender	age	intake_date
+1	Mushi	M	1	2016-01-09T00:00:00.000Z
+2	Seashell	F	7	2016-01-09T00:00:00.000Z
+4	Victoire	M	7	2016-01-11T00:00:00.000Z
+5	Nala	F	1	2016-01-12T00:00:00.000Z
+2	Seashell	F	7	2016-01-09T00:00:00.000Z
+3	Azul	M	3	2016-01-11T00:00:00.000Z
+4	Victoire	M	7	2016-01-11T00:00:00.000Z
+5	Nala	F	1	2016-01-12T00:00:00.000Z
+1	Mushi	M	1	2016-01-09T00:00:00.000Z
+2	Seashell	F	7	2016-01-09T00:00:00.000Z
+3	Azul	M	3	2016-01-11T00:00:00.000Z
+5	Nala	F	1	2016-01-12T00:00:00.000Z
+
+)The name of the person who adopted Rosco.
+
+A:SELECT adopters.first_name, adopters.last_name
+  FROM dog_adoptions AS d
+  JOIN adopters ON d.adopter_id = adopters.id
+  JOIN dogs ON d.dog_id = dogs.id
+  WHERE dogs.name = 'Rosco';
+
+first_name	last_name
+Argus	Filch
+
+9. Using this Library schema and data, write queries applying the following scenarios and include the results:
+
+)To determine if the library should buy more copies of a given book, please provide the names and position, in order, of all of the patrons with a hold (request for a book with all copies checked out) on "Advanced Potion-Making".
+
+A:SELECT patrons.name, holds.rank
+  FROM holds
+  JOIN patrons ON patrons.id = holds.patron_id
+  JOIN books ON books.isbn = holds.isbn
+  WHERE books.title = 'Advanced Potion-Making';
+
+name	rank
+Cedric Diggory	2
+Terry Boot	1
+
+)List all of the library patrons. If they have one or more books checked out, list the books with the patrons.
+
+A:SELECT patrons.id, patrons.name, books.title
+  FROM transactions AS tr
+  JOIN patrons ON tr.id = patrons.id
+  JOIN books ON books.isbn = tr.isbn;
+
+id	name	title
+1	Hermione Granger	Hogwarts: A History
+2	Terry Boot	Advanced Potion-Making
+3	Padma Patil	Fantastic Beasts and Where to Find Them
+4	Cho Chang	Fantastic Beasts and Where to Find Them
+5	Cedric Diggory	Advanced Potion-Making
