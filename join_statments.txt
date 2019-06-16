@@ -140,7 +140,7 @@ Terry Boot	1
 
 A:SELECT patrons.id, patrons.name, books.title
   FROM transactions AS tr
-  RIGHT JOIN patrons ON tr.id = patrons.id
+  RIGHT JOIN patrons ON tr.patron_id = patrons.id
   LEFT JOIN books ON books.isbn = tr.isbn
   AND tr.checked_in_date IS NULL;
 
