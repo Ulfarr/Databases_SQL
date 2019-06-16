@@ -140,9 +140,13 @@ Terry Boot	1
 
 A:SELECT patrons.id, patrons.name, books.title
   FROM transactions AS tr
-  JOIN patrons ON tr.id = patrons.id
-  JOIN books ON books.isbn = tr.isbn
-  WHERE tr.checked_in_date IS NULL;
+  RIGHT JOIN patrons ON tr.id = patrons.id
+  LEFT JOIN books ON books.isbn = tr.isbn
+  AND tr.checked_in_date IS NULL;
 
 id	name	title
+1	Hermione Granger	null
+2	Terry Boot	null
+3	Padma Patil	null
+4	Cho Chang	null
 5	Cedric Diggory	Advanced Potion-Making
